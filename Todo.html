@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #c1e5f1;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 60px;
+            overflow: hidden;
+        }
+
+        .todo-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            width: 500px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .todo-title {
+            color: #535657;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .todo-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .todo-input {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            font-size: 16px;
+        }
+
+        .add-btn {
+            background-color: #2191FB;
+            color: white;
+            border: none;
+            padding: 0 16px;
+            font-size: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .add-btn:hover {
+            background-color: #F06C9B;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #63C132;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .todo-text {
+            flex: 1;
+            font-size: 16px;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: transform 0.2s;
+        }
+
+        .delete-btn:hover {
+            transform: scale(1.2);
+            color: #F06C9B;
+        }
+    </style>
+</head>
+
+<body onload="loadTodos()">
+    <div class="todo-container">
+        <div class="todo-title">To-Do List</div>
+        <div class="todo-input-group">
+            <input id="todoInput" class="todo-input" placeholder="Add a new task...">
+            <button class="add-btn" onclick="addTodo()">+</button>
+        </div>
+        <div id="todoList"></div>
+    </div>
+
+    <script>
+        const todoList = document.getElementById('todoList');
+
+        function createTodo(key, text) {
+            const item = document.createElement('div');
+            item.className = 'todo-item';
+            item.innerHTML = `
+        <span class="todo-text">${text}</span>
+        <button class="delete-btn" data-key="${key}" onclick="delTodo(this)">🗑</button>`;
+            todoList.appendChild(item);
+        }
+
+        function addTodo() {
+            const input = document.getElementById('todoInput');
+            const text = input.value.trim();
+            if (!text) return;
+            const key = 'todo-' + Date.now();
+            localStorage.setItem(key, text);
+            createTodo(key, text);
+            input.value = '';
+        }
+        
+        function delTodo(btn) {
+            const key = btn.dataset.key;
+            localStorage.removeItem(key);
+            btn.parentElement.remove();
+        }
+
+        function loadTodos() {
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('todo-')) createTodo(key, localStorage[key]);
+            });
+        }
+    </script>
+</body>
+
+</html>
