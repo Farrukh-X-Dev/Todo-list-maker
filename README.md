@@ -39,6 +39,5 @@ If you'd like to:
 
 ---
 
-## Created By Farrukh Noman 
-### m.farrukhnoman@gmail.com
+## Created By Farrukh Noman ### m.farrukhnoman@gmail.com
 ---
